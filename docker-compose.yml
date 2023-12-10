@@ -90,7 +90,4 @@ services:
 networks:
     app:
         driver: bridge
-volumes:
-    sail-mysql:
-        driver: local
 

@@ -103,15 +103,6 @@ RUN curl -s http://getcomposer.org/installer | php && \
 # Source the bash
 RUN . ~/.bashrc
 
-#####################################
-# Laravel Schedule Cron Job:
-#####################################
-
-#RUN echo "* * * * * www-data /usr/local/bin/php /var/www/artisan schedule:run >> /dev/null 2>&1"  >> /etc/cron.d/laravel-scheduler
-#RUN chmod 0644 /etc/cron.d/laravel-scheduler
-
-
-
 #
 #--------------------------------------------------------------------------
 # Final Touch
@@ -146,7 +137,7 @@ RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
-WORKDIR /var/www/app
+WORKDIR /var/www/ecom-analysis
 
 
 EXPOSE 9000
