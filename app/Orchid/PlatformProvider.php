@@ -34,6 +34,30 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
+            Menu::make('Главная')
+                ->icon('bs.bar-chart')->divider(),
+
+            Menu::make('Магазины')
+                ->route('platform.shop.index')
+                ->icon('bs.shop')
+                ->title('Управление магазинами'),
+            Menu::make('Пункты выдачи')
+                ->icon('bs.truck'),
+            Menu::make('Сотрудники')
+                ->icon('bs.people')
+                ->divider(),
+
+            Menu::make('Категории товаров')
+                ->icon('bs.layers-fill')
+                ->title('Управление товарами'),
+            Menu::make('Товары')->icon('bs.gift')
+                ->divider(),
+
+            Menu::make('Заказы')
+                ->icon('bs.clipboard-check')
+                ->title('Заказы')
+                ->divider(),
+
             Menu::make('Get Started')
                 ->icon('bs.book')
                 ->title('Navigation')
@@ -42,7 +66,7 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Sample Screen')
                 ->icon('bs.collection')
                 ->route('platform.example')
-                ->badge(fn () => 6),
+                ->badge(fn() => 6),
 
             Menu::make('Form Elements')
                 ->icon('bs.card-list')
@@ -66,29 +90,29 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.example.cards')
                 ->divider(),
 
-            Menu::make(__('Users'))
+            Menu::make(__('Пользователи системы'))
                 ->icon('bs.people')
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')
-                ->title(__('Access Controls')),
+                ->title(__('Управление системной')),
 
-            Menu::make(__('Roles'))
+            Menu::make(__('Роли'))
                 ->icon('bs.shield')
                 ->route('platform.systems.roles')
                 ->permission('platform.systems.roles')
                 ->divider(),
 
-            Menu::make('Documentation')
-                ->title('Docs')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://orchid.software/en/docs')
-                ->target('_blank'),
-
-            Menu::make('Changelog')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://github.com/orchidsoftware/platform/blob/master/CHANGELOG.md')
-                ->target('_blank')
-                ->badge(fn () => Dashboard::version(), Color::DARK),
+//            Menu::make('Documentation')
+//                ->title('Docs')
+//                ->icon('bs.box-arrow-up-right')
+//                ->url('https://orchid.software/en/docs')
+//                ->target('_blank'),
+//
+//            Menu::make('Changelog')
+//                ->icon('bs.box-arrow-up-right')
+//                ->url('https://github.com/orchidsoftware/platform/blob/master/CHANGELOG.md')
+//                ->target('_blank')
+//                ->badge(fn() => Dashboard::version(), Color::DARK),
         ];
     }
 

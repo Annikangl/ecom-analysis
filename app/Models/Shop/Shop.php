@@ -6,10 +6,12 @@ use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Orchid\Attachment\Attachable;
+use Orchid\Screen\AsSource;
 
 class Shop extends Model
 {
-    use HasFactory;
+    use HasFactory, AsSource, Attachable;
 
     public $timestamps = false;
 
