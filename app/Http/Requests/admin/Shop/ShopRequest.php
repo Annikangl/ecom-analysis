@@ -15,10 +15,11 @@ class ShopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'company_name' => ['required', 'string', 'max:255'],
-            'website' => ['required', 'string', 'url'],
-            'countries' => ['required', 'array']
+            'shop.name' => ['required', 'string', 'max:255'],
+            'shop.company_name' => ['required', 'string', 'max:255'],
+            'shop.website' => ['required', 'string', 'url'],
+            'shop.countries' => ['sometimes', 'array'],
+            'attachment' => ['sometimes', 'array']
         ];
     }
 }

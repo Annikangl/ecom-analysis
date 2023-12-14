@@ -6,6 +6,7 @@ use App\Models\Shop\Shop;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -19,11 +20,11 @@ class ShopListLayout extends Table
             TD::make('Логотип')
                 ->width('100')
                 ->render(fn(Shop $shop) => view('admin.thumbnail', [
-                    'image' => $shop->attachment->first()->url,
+                    'image' => $shop->attachment->first()->url ?? '',
                     'id' => $shop->id])
                 ),
-            TD::make('id', '№'),
-            TD::make('name', 'Магазин'),
+            TD::make('id', '№')->sort(),
+            TD::make('name', 'Магазин')->sort(),
             TD::make('company_name', 'Компания'),
             TD::make('Действия')->render(fn(Shop $shop) => DropDown::make()
                 ->icon('bs.three-dots-vertical')
@@ -32,11 +33,19 @@ class ShopListLayout extends Table
                         ->icon('eye')
                         ->route('platform.shop.show', $shop),
 
+                    ModalToggle::make(('Изменить'))
+                        ->modal('editShopModal')
+                        ->method('updateShop')
+                        ->asyncParameters([
+                            'shop' => $shop->id
+                        ])
+                        ->icon('pencil'),
+
                     Button::make(('Delete'))
                         ->icon('trash')
                         ->confirm(('Вы действительно хотите удалить: ' . $shop->name))
-                        ->method('delete', [
-                            'id' => $shop->id,
+                        ->method('deleteShop', [
+                            'shop' => $shop->id,
                         ])
                 ])),
         ];
