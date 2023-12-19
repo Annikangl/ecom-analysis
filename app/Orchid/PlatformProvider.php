@@ -41,9 +41,13 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.shop.index')
                 ->icon('bs.shop')
                 ->title('Управление магазинами'),
+
             Menu::make('Пункты выдачи')
+                ->route('platform.point.index')
                 ->icon('bs.truck'),
+
             Menu::make('Сотрудники')
+                ->route('platform.employee.index')
                 ->icon('bs.people')
                 ->divider(),
 

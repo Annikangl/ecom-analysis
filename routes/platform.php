@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Shop\Employee;
+use App\Models\Shop\Point;
 use App\Models\Shop\Shop;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
@@ -15,6 +17,10 @@ use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Shop\EmployeeScreen;
+use App\Orchid\Screens\Shop\EmployeeViewScreen;
+use App\Orchid\Screens\Shop\PointScreen;
+use App\Orchid\Screens\Shop\PointViewScreen;
 use App\Orchid\Screens\Shop\ShopScreen;
 use App\Orchid\Screens\Shop\ShopViewScreen;
 use App\Orchid\Screens\User\UserEditScreen;
@@ -33,18 +39,42 @@ Route::name('platform.')->group(function () {
         ->name('main');
 
 
-// Shop
+    // Platform -> Shop
+
     Route::group(['prefix' => 'shop', 'as' => 'shop.'], function () {
-        Route::screen('/', ShopScreen::class)
-            ->name('index')
+        Route::screen('/', ShopScreen::class)->name('index')
             ->breadcrumbs(fn(Trail $trail) => $trail
                 ->parent('platform.index')
                 ->push(__('Магазины'), route('platform.shop.index')));
-        Route::screen('/{shop}', ShopViewScreen::class)
-            ->name('show')
-            ->breadcrumbs(fn(Trail $trail, $shop) =>  $trail
+        Route::screen('/{shop}', ShopViewScreen::class)->name('show')
+            ->breadcrumbs(fn(Trail $trail, $shop) => $trail
                 ->parent('platform.shop.index')
                 ->push($shop->name, route('platform.shop.show', $shop)));
+    });
+
+    // Platform -> Points
+
+    Route::group(['prefix' => 'point', 'as' => 'point.'], function () {
+        Route::screen('/', PointScreen::class)->name('index')
+            ->breadcrumbs(fn(Trail $trail) => $trail
+                ->parent('platform.index')
+                ->push(__('Пункты выдачи'), route('platform.point.index')));
+        Route::screen('/{point}', PointViewScreen::class)->name('show')
+            ->breadcrumbs(fn(Trail $trail, Point $point) => $trail
+                ->parent('platform.point.index')
+                ->push($point->name, route('platform.point.show', $point)));
+    });
+
+    // Platform - Employee
+    Route::group(['prefix' => 'employee', 'as' => 'employee.'], function () {
+        Route::screen('/', EmployeeScreen::class)->name('index')
+            ->breadcrumbs(fn(Trail $trail) => $trail
+                ->parent('platform.index')
+                ->push(__('Сотрудники'), route('platform.employee.index')));
+        Route::screen('/{employee}', EmployeeViewScreen::class)->name('show')
+            ->breadcrumbs(fn(Trail $trail, Employee $employee) => $trail
+                ->parent('platform.employee.index')
+                ->push($employee->full_name, route('platform.employee.show', $employee)));
     });
 });
 

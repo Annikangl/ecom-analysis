@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class Point extends Model
 {
-    use HasFactory;
+    use HasFactory, AsSource, Filterable;
 
     protected $fillable = [
         'shop_id',

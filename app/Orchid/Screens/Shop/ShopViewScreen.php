@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens\Shop;
 
 use App\Models\Shop\Shop;
+use App\Orchid\Layouts\Shop\PointListLayout;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Sight;
@@ -15,7 +16,8 @@ class ShopViewScreen extends Screen
     public function query(Shop $shop): iterable
     {
         return [
-            'shop' => $shop
+            'shop' => $shop,
+            'points' => $shop->points,
         ];
     }
 
@@ -42,6 +44,8 @@ class ShopViewScreen extends Screen
                 Sight::make('Изображение')
                     ->render(fn (Shop $shop) => view('admin.thumbnail', ['image' => $shop->attachment->first()->url]))
             ]),
+
+            PointListLayout::class,
         ];
     }
 }
