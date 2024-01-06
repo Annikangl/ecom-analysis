@@ -14,6 +14,8 @@ class PointListLayout extends Table
 {
     protected $target = 'points';
 
+    protected $title = 'Пункты выдачи';
+
     protected function columns(): iterable
     {
         return [

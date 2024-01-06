@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Order\Order;
+use App\Models\Product\Product;
+use App\Models\Product\ProductCategory;
 use App\Models\Shop\Employee;
 use App\Models\Shop\Point;
 use App\Models\Shop\Shop;
@@ -14,7 +17,13 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\Order\OrderScreen;
+use App\Orchid\Screens\Order\OrderViewScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\Product\CategoryScreen;
+use App\Orchid\Screens\Product\CategoryViewScreen;
+use App\Orchid\Screens\Product\ProductScreen;
+use App\Orchid\Screens\Product\ProductViewScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\Shop\EmployeeScreen;
@@ -75,6 +84,48 @@ Route::name('platform.')->group(function () {
             ->breadcrumbs(fn(Trail $trail, Employee $employee) => $trail
                 ->parent('platform.employee.index')
                 ->push($employee->full_name, route('platform.employee.show', $employee)));
+    });
+
+    // Platform > Products > Category
+
+    Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
+        Route::screen('/', CategoryScreen::class)->name('index')
+            ->breadcrumbs(fn(Trail $trail) => $trail
+                ->parent('platform.index')
+                ->push(__('Категории товаров'), route('platform.category.index')));
+
+        Route::screen('/{productCategory}', CategoryViewScreen::class)->name('show')
+            ->breadcrumbs(fn(Trail $trail, ProductCategory $category) => $trail
+                ->parent('platform.category.index')
+                ->push($category->name, route('platform.category.show', $category)));
+    });
+
+    // Platform > Products
+
+    Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
+        Route::screen('/', ProductScreen::class)->name('index')
+            ->breadcrumbs(fn(Trail $trail) => $trail
+                ->parent('platform.index')
+                ->push(__('Список товаров'), route('platform.product.index')));
+
+        Route::screen('/{product}', ProductViewScreen::class)->name('show')
+            ->breadcrumbs(fn(Trail $trail, Product $product) => $trail
+                ->parent('platform.product.index')
+                ->push($product->title, route('platform.product.show', $product)));
+    });
+
+    // Platform > Orders
+
+    Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
+        Route::screen('/', OrderScreen::class)->name('index')
+            ->breadcrumbs(fn(Trail $trail) => $trail
+                ->parent('platform.index')
+                ->push(__('Список заказов'), route('platform.order.index')));
+
+        Route::screen('/{order}', OrderViewScreen::class)->name('show')
+            ->breadcrumbs(fn(Trail $trail, Order $order) => $trail
+                ->parent('platform.order.index')
+                ->push($order->id, route('platform.order.show', $order)));
     });
 });
 

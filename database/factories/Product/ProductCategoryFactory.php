@@ -13,7 +13,10 @@ class ProductCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'parent_id' => $this->faker->randomNumber(),
+            'parent_id' => $this->faker->randomElement([
+                ProductCategory::query()->inRandomOrder()->value('id'),
+                null,
+            ]),
             'name' => $this->faker->name(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

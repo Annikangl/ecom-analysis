@@ -19,9 +19,9 @@ class EmployeeListLayout extends Table
         return [
             TD::make('Фотография')
                 ->width('100')
-                ->render(fn(Employee $employee) =>  $employee->attachment->first()?->url ? view('admin.thumbnail', [
-                    'image' => $employee->attachment->first()->url ?? '',
-                    'id' => $employee->id]) : ''
+                ->render(fn(Employee $employee) =>  view('admin.thumbnail', [
+                    'image' => $employee->attachment->first()?->url,
+                    'id' => $employee->id])
                 ),
             TD::make('id', 'Идентификатор сотрудника')->sort(),
             TD::make('full_name', 'ФИО'),

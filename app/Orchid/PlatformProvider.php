@@ -52,12 +52,16 @@ class PlatformProvider extends OrchidServiceProvider
                 ->divider(),
 
             Menu::make('Категории товаров')
+                ->route('platform.category.index')
                 ->icon('bs.layers-fill')
                 ->title('Управление товарами'),
+
             Menu::make('Товары')->icon('bs.gift')
+                ->route('platform.product.index')
                 ->divider(),
 
             Menu::make('Заказы')
+                ->route('platform.order.index')
                 ->icon('bs.clipboard-check')
                 ->title('Заказы')
                 ->divider(),
