@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts\Shop;
 
 use App\Models\Shop\Employee;
+use Illuminate\Support\Facades\Route;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
@@ -13,6 +14,13 @@ use Orchid\Screen\TD;
 class EmployeeListLayout extends Table
 {
     protected $target = 'employees';
+
+    protected $title = 'Список сотрудников';
+
+    protected function compact(): bool
+    {
+        return Route::is('platform.point.show');
+    }
 
     protected function columns(): iterable
     {
@@ -41,11 +49,12 @@ class EmployeeListLayout extends Table
                         ->asyncParameters([
                             'employee' => $employee->id
                         ])
-                        ->icon('pencil'),
+                        ->icon('pencil')->canSee(Route::is('platform.employee.index')),
 
                     Button::make(('Delete'))
                         ->icon('trash')
                         ->confirm(('Вы действительно хотите удалить: ' . $employee->full_name))
+                        ->canSee(Route::is('platform.employee.index'))
                         ->method('deleteEmployee', [
                             'employee' => $employee->id,
                         ])

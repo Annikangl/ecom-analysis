@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Orchid\Metrics\Chartable;
 use Orchid\Screen\AsSource;
 
 class Order extends Model
 {
-    use HasFactory, AsSource;
+    use HasFactory, AsSource, Chartable;
 
     protected $fillable = [
         'point_id',

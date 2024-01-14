@@ -18,7 +18,7 @@ class OrderFactory extends Factory
             'point_id' => Point::query()->inRandomOrder()->value('id'),
             'employee_id' => Employee::query()->inRandomOrder()->value('id'),
             'total_amount' => $this->faker->randomNumber(),
-            'created_at' => Carbon::now(),
+            'created_at' => Carbon::now()->subDays(random_int(1,30)),
             'updated_at' => Carbon::now(),
         ];
     }

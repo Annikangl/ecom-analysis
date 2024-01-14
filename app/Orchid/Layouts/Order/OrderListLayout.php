@@ -3,10 +3,8 @@
 namespace App\Orchid\Layouts\Order;
 
 use App\Models\Order\Order;
-use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -36,13 +34,13 @@ class OrderListLayout extends Table
                         ->icon('eye')
                         ->route('platform.order.show', $order),
 
-                    ModalToggle::make(('Изменить'))
-                        ->modal('editOrderModal')
-                        ->method('updateOrder')
-                        ->asyncParameters([
-                            'order' => $order->id
-                        ])
-                        ->icon('pencil'),
+//                    ModalToggle::make(('Изменить'))
+//                        ->modal('editOrderModal')
+//                        ->method('updateOrder')
+//                        ->asyncParameters([
+//                            'order' => $order->id
+//                        ])
+//                        ->icon('pencil'),
                 ])),
         ];
     }
