@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Order;
 
+use App\Exports\OrdersExport;
 use App\Http\Requests\admin\Order\OrderRequest;
 use App\Models\Order\Order;
 use App\Models\Order\OrderItem;
@@ -12,6 +13,8 @@ use App\Orchid\Layouts\Order\OrderListLayout;
 use App\Orchid\Layouts\Order\TotalAmountListener;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
@@ -21,6 +24,7 @@ use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class OrderScreen extends Screen
 {
@@ -46,6 +50,8 @@ class OrderScreen extends Screen
                 ->modal('createOrderModal')
                 ->method('createOrder')
                 ->icon('bs.plus-circle'),
+
+            Button::make('Экспорт')->icon('download')->method('export')->rawClick(),
         ];
     }
 
@@ -99,5 +105,10 @@ class OrderScreen extends Screen
         Toast::success('Заказ создан успешно!');
 
         return redirect()->back();
+    }
+
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new OrdersExport(), 'orders.xlsx');
     }
 }

@@ -2,12 +2,15 @@
 
 namespace App\Orchid\Screens\Shop;
 
+use App\Exports\PointExport;
 use App\Http\Requests\admin\Shop\PointRequest;
 use App\Models\Shop\Point;
 use App\Models\Shop\Shop;
 use App\Orchid\Layouts\Shop\PointListLayout;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\Input;
@@ -15,6 +18,7 @@ use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PointScreen extends Screen
 {
@@ -45,6 +49,8 @@ class PointScreen extends Screen
                 ->modal('createPointModal')
                 ->method('createPoint')
                 ->icon('bs.plus-circle'),
+
+            Button::make('Экспорт')->icon('download')->method('export')->rawClick(),
         ];
     }
 
@@ -127,6 +133,11 @@ class PointScreen extends Screen
         return [
             'point' => $point
         ];
+    }
+
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new PointExport(), 'points.xlsx');
     }
 
 }

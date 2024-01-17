@@ -2,14 +2,18 @@
 
 namespace App\Orchid\Screens\Shop;
 
+use App\Exports\EmployeeExport;
 use App\Http\Requests\admin\Shop\EditEmployeeRequest;
 use App\Http\Requests\admin\Shop\EmployeeRequest;
 use App\Models\Shop\Employee;
 use App\Models\Shop\Point;
+use App\Orchid\Layouts\Selection\EmployeeSelection;
 use App\Orchid\Layouts\Shop\EmployeeListLayout;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Group;
@@ -19,6 +23,7 @@ use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class EmployeeScreen extends Screen
 {
@@ -28,6 +33,7 @@ class EmployeeScreen extends Screen
             'employees' => Employee::query()
                 ->with(['point', 'orders', 'attachment'])
                 ->withCount('orders')
+                ->filtersApplySelection(EmployeeSelection::class)
                 ->defaultSort('id', 'desc')
                 ->paginate(25),
         ];
@@ -50,6 +56,8 @@ class EmployeeScreen extends Screen
                 ->modal('createEmployeeModal')
                 ->method('createEmployee')
                 ->icon('bs.plus-circle'),
+
+            Button::make('Экспорт')->icon('download')->method('export')->rawClick(),
         ];
     }
 
@@ -59,6 +67,7 @@ class EmployeeScreen extends Screen
     public function layout(): iterable
     {
         return [
+            EmployeeSelection::class,
             EmployeeListLayout::class,
 
             Layout::modal('createEmployeeModal', [
@@ -79,6 +88,7 @@ class EmployeeScreen extends Screen
                         DateTimer::make('employee.birthdate')
                             ->title('Дата рождения')
                             ->placeholder('Выберите дату')
+                            ->help('Не должен быть младше 18 лет')
                             ->allowInput(),
 
                         DateTimer::make('employee.employment_date')
@@ -119,22 +129,27 @@ class EmployeeScreen extends Screen
         ];
     }
 
-    public function createEmployee(EmployeeRequest $request): void
+    public function createEmployee(EmployeeRequest $request): RedirectResponse
     {
         $birthdate = Carbon::parse($request->validated('employee.birthdate'));
         $employmentDate = Carbon::parse($request->validated('employee.employment_date'));
 
-//        if ($employmentDate->diffInYears($birthdate) < 18) {
-//           Toast::error('Возврат принятия сотрудника на работу не может быть меньше 18 лет');
-//           return redirect()->back()->withErrors('Возврат принятия сотрудника на работу не может быть меньше 18 лет.');
-//        }
+        if ($employmentDate->diffInYears($birthdate) < 18) {
+           Toast::error('Возврат принятия сотрудника на работу не может быть меньше 18 лет');
+           return redirect()->back()
+               ->withErrors('Возврат принятия сотрудника на работу не может быть меньше 18 лет.');
+        }
 
         $validatedData = collect($request->validated('employee'))->except(['_token', 'image'])->toArray();
+
+        $validatedData['phone'] = str_replace(' ', '', $validatedData['phone']);
 
         $employee = Employee::query()->create($validatedData);
         $employee->attachment()->syncWithoutDetaching($request->input('employee.image')[0]);
 
         Toast::success("Сотрудник $employee->full_name успешно добавлен и привязан к пункту выдачи");
+
+        return redirect()->back();
     }
 
     public function updateEmployee(EditEmployeeRequest $request): void
@@ -165,5 +180,10 @@ class EmployeeScreen extends Screen
         return [
             'employee' => $employee,
         ];
+    }
+
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new EmployeeExport, 'employee.xlsx');
     }
 }

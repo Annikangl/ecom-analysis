@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Product;
 
+use App\Exports\ProductExport;
 use App\Http\Requests\admin\Product\ProductRequest;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
@@ -9,6 +10,8 @@ use App\Models\Shop\Shop;
 use App\Orchid\Layouts\Product\ProductListLayout;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
@@ -19,6 +22,7 @@ use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProductScreen extends Screen
 {
@@ -45,6 +49,8 @@ class ProductScreen extends Screen
                 ->modal('createProductModal')
                 ->method('createProduct')
                 ->icon('bs.plus-circle'),
+
+            Button::make('Экспорт')->icon('download')->method('export')->rawClick(),
         ];
     }
 
@@ -171,5 +177,10 @@ class ProductScreen extends Screen
         return [
             'product' => $product,
         ];
+    }
+
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new ProductExport(), 'products.xlsx');
     }
 }

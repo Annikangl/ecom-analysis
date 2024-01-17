@@ -28,6 +28,19 @@ class Employee extends Model
         'updated_at',
     ];
 
+    protected array $allowedSorts  = [
+        'id',
+        'employment_date',
+        'orders_count'
+    ];
+
+    protected array $allowedFilters  = [
+        'full_name',
+        'passport_series',
+        'phone',
+        'employment_date',
+    ];
+
     public function point(): BelongsTo
     {
         return $this->belongsTo(Point::class);

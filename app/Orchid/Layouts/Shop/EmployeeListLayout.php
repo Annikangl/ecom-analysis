@@ -8,6 +8,7 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
+use Orchid\Screen\Components\Cells\Number;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -31,10 +32,13 @@ class EmployeeListLayout extends Table
                     'image' => $employee->attachment->first()?->url,
                     'id' => $employee->id])
                 ),
-            TD::make('id', 'Идентификатор сотрудника')->sort(),
+            TD::make('id', '№')->sort(),
             TD::make('full_name', 'ФИО'),
+            TD::make('phone', 'Телефон'),
             TD::make('point.name', 'Пункт выдачи'),
-            TD::make('orders_count', 'Кол-во выполненных заказов')->sort(),
+            TD::make('employment_date', 'Принят на работу')->sort(),
+            TD::make('orders_count', 'Кол-во выполненных заказов')->sort()
+                ->usingComponent(Number::class),
 
             TD::make('Действия')->render(fn(Employee $employee) => DropDown::make()
                 ->icon('bs.three-dots-vertical')
