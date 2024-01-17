@@ -19,17 +19,17 @@ class ProductExport implements FromCollection, WithMapping, WithHeadings
         return Product::query()->with(['category','orders', 'shop'])->get();
     }
 
-    public function map($product): array
+    public function map($row): array
     {
-        /** @var Product $product */
+        /** @var Product $row */
 
         return [
-            $product->id,
-            $product->shop->name,
-            $product->title,
-            $product->description,
-            $product->price,
-            $product->created_at,
+            $row->id,
+            $row->shop->name,
+            $row->title,
+            $row->description,
+            $row->price,
+            $row->created_at,
         ];
     }
 
