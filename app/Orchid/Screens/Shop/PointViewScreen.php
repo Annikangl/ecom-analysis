@@ -197,11 +197,11 @@ class PointViewScreen extends Screen
         return [
             [
                 'title' => 'Средний чек одного сотрудника за все время, руб',
-                'value' => ceil($ordersAmount / $employeeCounts),
+                'value' => $employeeCounts > 0 ?ceil($ordersAmount / $employeeCounts) : 0,
             ],
             [
                 'title' => 'Средний чек одного сотрудника за месяц, руб',
-                'value' => ceil($ordersAmountByLastMonth / $employeeCounts),
+                'value' => $employeeCounts > 0 ? ceil($ordersAmountByLastMonth / $employeeCounts) : 0,
             ],
             [
                 'title' => 'Средний чек сотрудника за день, руб.',
