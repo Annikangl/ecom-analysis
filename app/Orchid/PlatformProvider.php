@@ -35,6 +35,7 @@ class PlatformProvider extends OrchidServiceProvider
     {
         return [
             Menu::make('Главная')
+                ->route('platform.main')
                 ->icon('bs.bar-chart')->divider(),
 
             Menu::make('Магазины')

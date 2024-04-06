@@ -9,10 +9,10 @@ class ShopFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->words(2),
+            'name' => $this->faker->word(),
             'website' => $this->faker->url(),
-            'company_name' => $this->faker->words(),
-            'countries' => $this->faker->country(),
+            'company_name' => $this->faker->company(),
+            'countries' => ['US', 'CA', 'UK', 'AU'],
         ];
     }
 }

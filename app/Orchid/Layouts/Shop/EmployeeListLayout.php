@@ -37,8 +37,7 @@ class EmployeeListLayout extends Table
             TD::make('phone', 'Телефон'),
             TD::make('point.name', 'Пункт выдачи'),
             TD::make('employment_date', 'Принят на работу')->sort(),
-            TD::make('orders_count', 'Кол-во выполненных заказов')->sort()
-                ->usingComponent(Number::class),
+            TD::make('orders_count', 'Кол-во выполненных заказов')->sort(),
 
             TD::make('Действия')->render(fn(Employee $employee) => DropDown::make()
                 ->icon('bs.three-dots-vertical')

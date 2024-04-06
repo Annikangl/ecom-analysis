@@ -23,8 +23,8 @@ class CategoryListLayout extends Table
     {
         return [
             TD::make('id', '#'),
-            TD::make( 'parent.name', 'Родительская категория'),
             TD::make('name', 'Категория'),
+            TD::make( 'parent.name', 'Родительская категория'),
             TD::make('Действия')->render(fn(ProductCategory $category) => DropDown::make()
                 ->icon('bs.three-dots-vertical')
                 ->list([

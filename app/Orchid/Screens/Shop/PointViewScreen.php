@@ -111,7 +111,7 @@ class PointViewScreen extends Screen
 
             Layout::columns([
                 OrdersByDateLineChart::make('ordersDynamic', 'Динамика заказов за последние 30 дней'),
-                OrdersByDateLineChart::make('averageByDays', 'Динамика заказов за последние 30 дней'),
+                OrdersByDateLineChart::make('averageByDays', 'Динамика стоимости заказов за последние 30 дней'),
             ]),
 
             EmployeeListLayout::class,
@@ -158,7 +158,7 @@ class PointViewScreen extends Screen
         if ($daysWithOrders > 0) {
             $averageCheckPerEmployeePerDay = $totalAmount / $daysWithOrders;
         } else {
-            $averageCheckPerEmployeePerDay = 0; // В случае отсутствия заказов
+            $averageCheckPerEmployeePerDay = 0;
         }
 
         return ceil($averageCheckPerEmployeePerDay);
